@@ -29,20 +29,25 @@ namespace ToDoApp {
         async Task CreateTodo() {
             Cli.DisplayLine("called CreateTodos()");
             Cli.DisplayLine();
-            var category = new Category(); // this is creating an instance of catergory for belows use
+            var category = await CatCtrl.GetAll(); // this is creating an instance of catergory for belows use
             var todo = new Todo(); // this is creating a instance of ToDo.
+
             todo.Id = 0;
             todo.Description = Cli.GetString("Enter Description");
             todo.Due = Cli.GetDateTime("Enter Due Date");
             todo.Note = Cli.GetString("Enter note");
             Cli.DisplayLine("Categories");
-            foreach
-            //todo.CategoryId = 1;
-            //Cli.DisplayLine("Choose Category");
+            foreach(var c in category) {
+                Cli.DisplayLine($" {c.Id} : {c.Name}");
+            }
+            todo.CategoryId = Cli.Getint("Select category");
+            var newTodo = await ToDoCtrl.Create(todo);
+            Cli.DisplayLine();
+            Cli.DisplayLine();
             //todo.CategoryId = Cli.Getint("1 : Personal \n 2 : Professional");
 
 
-             await ToDoCtrl.Create(todo); // this line is adding the ToDo object to the database
+            await ToDoCtrl.Create(todo); // this line is adding the ToDo object to the database
 
 
             
